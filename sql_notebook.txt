@@ -1,0 +1,59 @@
+SELECT
+  answer_choices.*, COUNT(responses.answer_choice_id)
+FROM
+  answer_choices
+LEFT OUTER JOIN
+  responses
+ON responses.answer_choice_id = answer_choices.id
+WHERE
+  answer_choices.question_id = 1
+GROUP BY
+  answer_choices.id
+
+SELECT answer_choices.*, COUNT(responses.answer_choice_id) FROM "answer_choices" LEFT OUTER JOIN responses ON responses.answer_choice_id = answer_choices.id WHERE "answer_choices"."question_id" = 1 GROUP BY answer_choices.id
+
+SELECT
+  polls.*
+FROM
+  polls 
+JOIN
+  questions
+ON questions.poll_id = polls.id
+JOIN
+  answer_choices
+ON answer_choices.question_id = questions.id
+LEFT OUTER JOIN
+  (SELECT
+    responses.*
+  FROM
+    responses
+  WHERE
+    user_id = 2
+  ) AS user_responses
+ON user_responses.answer_choice_id = answer_choices.id
+GROUP BY
+  polls.id
+HAVING
+  COUNT(user_responses.user_id) = COUNT(DISTINCT(questions.id))
+
+
+
+1
+
+
+1. Go to the polls table and get all the polls
+
+POLL
+1) how many questions it has?
+2) how many answered questions by one user
+COUNT(response
+
+
+
+
+
+
+
+
+
+) where response.poll.id = poll.id

@@ -33,3 +33,7 @@ Poll.create!(title: "Pollster", author_id: User.last.id)
 Question.create!(text: "What is your quest?", poll_id: Poll.last.id)
 AnswerChoice.create!(text: "to seek the holy grail", question_id: Question.last.id)
 AnswerChoice.create!(text: "to not fail two assessments", question_id: Question.last.id)
+
+Question.create!(text: "what is the second question?", poll_id: Poll.first.id)
+AnswerChoice.create!(text: "Don't know", question_id: Question.last.id)
+AnswerChoice.create!(text: "Itself", question_id: Question.last.id)
