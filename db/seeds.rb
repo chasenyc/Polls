@@ -5,7 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
 ("a".."f").each { |letter| User.create!(user_name: letter) }
 
 User.all.each_with_index { |user, i| Poll.create!(title: i.to_s, author_id: user.id)}
@@ -23,6 +22,14 @@ end
 
 Question.all.each do |question|
   User.all.each do |user|
-    Response.create!(user_id: user.id, answer_choice_id: question.answer_choices.sample.id)
+    unless user.id == question.poll.author_id
+      Response.create!(user_id: user.id, answer_choice_id: question.answer_choices.sample.id)
+    end
   end
 end
+
+User.create!(user_name: "bobby tables")
+Poll.create!(title: "Pollster", author_id: User.last.id)
+Question.create!(text: "What is your quest?", poll_id: Poll.last.id)
+AnswerChoice.create!(text: "to seek the holy grail", question_id: Question.last.id)
+AnswerChoice.create!(text: "to not fail two assessments", question_id: Question.last.id)

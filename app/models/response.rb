@@ -8,11 +8,14 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
+require 'byebug'
 
 class Response < ActiveRecord::Base
   validates :user_id, presence: true
   validates :answer_choice_id, presence: true
   validate :respondent_has_not_already_answered_question
+  validate :respondent_cannot_be_author
+
 
   belongs_to :answer_choice,
     class_name: "AnswerChoice",
@@ -28,13 +31,16 @@ class Response < ActiveRecord::Base
     through: :answer_choice,
     source: :question
 
-
   def sibling_responses
     if self.id.nil?
       question.responses
     else
       question.responses.where("responses.id != ?", self.id)
     end
+  end
+
+  def poll
+    question.poll
   end
 
   private
@@ -44,4 +50,11 @@ class Response < ActiveRecord::Base
       errors[:response] << "can't already exist"
     end
   end
+
+  def respondent_cannot_be_author
+    if poll.author_id == self.user_id
+      errors[:response] << "can't be author of poll"
+    end
+  end
+
 end
