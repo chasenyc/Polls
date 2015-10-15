@@ -31,5 +31,31 @@ class Question < ActiveRecord::Base
     through: :poll,
     source: :author
 
+  def n_plus_one_results
+    responses = self.responses
+    results = Hash.new(0)
+    responses.each do |response|
+      results[response.answer_choice.text] += 1
+    end
+
+    results
+  end
+
+  def better_but_not_best_results
+    answers = self.answer_choices.includes(:responses)
+    results = {}
+    answer_choices.each do |answer|
+      results[answer.text] = answer.responses.length
+    end
+
+    results
+  end
+
+  def results
+    answers = self.answer_choices
+      .joins('LEFT OUTER JOIN responses ON responses.answer_choice_id = answer_choices.id')
+      .group("answer_choices.text")
+      .count
+  end
 
 end
