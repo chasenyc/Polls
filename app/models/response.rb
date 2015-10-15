@@ -12,7 +12,7 @@
 class Response < ActiveRecord::Base
   validates :user_id, presence: true
   validates :answer_choice_id, presence: true
-  # validate :respondent_has_not_already_answered_question
+  validate :respondent_has_not_already_answered_question
 
   belongs_to :answer_choice,
     class_name: "AnswerChoice",
@@ -30,12 +30,18 @@ class Response < ActiveRecord::Base
 
 
   def sibling_responses
-    question.responses.where("responses.id != ?", self.id)
+    if self.id.nil?
+      question.responses
+    else
+      question.responses.where("responses.id != ?", self.id)
+    end
   end
 
   private
 
   def respondent_has_not_already_answered_question
-
+    if sibling_responses.exists?(user_id: self.user_id)
+      errors[:response] << "can't already exist"
+    end
   end
 end
