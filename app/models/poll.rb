@@ -13,14 +13,12 @@ class Poll < ActiveRecord::Base
   validates :title, presence: true
   validates :author_id, presence: true
 
-  belongs_to
-    :author,
+  belongs_to :author,
     class_name: "User",
     foreign_key: :user_id,
     primary_key: :id
 
-  has_many
-    :questions,
+  has_many :questions,
     class_name: "Question",
     foreign_key: :poll_id,
     primary_key: :id
