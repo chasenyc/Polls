@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015140601) do
+ActiveRecord::Schema.define(version: 20151015145142) do
 
   create_table "answer_choices", force: :cascade do |t|
-    t.text     "text"
-    t.integer  "question_id"
+    t.text     "text",        null: false
+    t.integer  "question_id", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20151015140601) do
   add_index "answer_choices", ["question_id"], name: "index_answer_choices_on_question_id"
 
   create_table "polls", force: :cascade do |t|
-    t.string   "title"
-    t.integer  "author_id"
+    t.string   "title",      null: false
+    t.integer  "author_id",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 20151015140601) do
   add_index "polls", ["author_id"], name: "index_polls_on_author_id"
 
   create_table "questions", force: :cascade do |t|
-    t.text     "text"
-    t.integer  "poll_id"
+    t.text     "text",       null: false
+    t.integer  "poll_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -41,8 +41,8 @@ ActiveRecord::Schema.define(version: 20151015140601) do
   add_index "questions", ["poll_id"], name: "index_questions_on_poll_id"
 
   create_table "responses", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "answer_choice_id"
+    t.integer  "user_id",          null: false
+    t.integer  "answer_choice_id", null: false
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20151015140601) do
   add_index "responses", ["user_id"], name: "index_responses_on_user_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "user_name"
+    t.string   "user_name",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
